@@ -13,11 +13,12 @@ spec:
       labels:
         name: registry-creds
     spec:
+      serviceAccountName: registry-creds
       containers:
       - image: upmcenterprises/registry-creds:1.10
         name: registry-creds
         imagePullPolicy: Always
-        env:
+        env: # Remove whichever env vars are not applicable to your deployment
           - name: AWS_ACCESS_KEY_ID
             valueFrom:
               secretKeyRef:
@@ -73,11 +74,11 @@ spec:
               secretKeyRef:
                 name: registry-creds-acr
                 key: ACR_PASSWORD
-        volumeMounts:
+        volumeMounts: # This block can be safely removed if not using GCR
         - name: gcr-creds
           mountPath: "/root/.config/gcloud"
           readOnly: true
-      volumes:
+      volumes: # This block can be safely removed if not using GCR
       - name: gcr-creds
         secret:
           secretName: registry-creds-gcr
