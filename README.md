@@ -55,21 +55,19 @@ The following parameters are driven via Environment variables.
       }
       ```
 
-   2. If you are not running in AWS Cloud, then you can still use this tool! Edit & create the sample [secret](k8s/secret.yaml) and update values for `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `aws-account`, and `aws-region` (base64 encoded).
+   2. If you are not running in AWS Cloud, then you can still use this tool! Edit the [secret](k8s/secret.yaml) and update values for `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `aws-account`, and `aws-region`.
+   > **NOTE:** If running inside EC2, there is no need to provide `AWS_ACCESS_KEY_ID` or `AWS_SECRET_ACCESS_KEY` since that will come from the instance profile.
 
+   > **IMPORTANT:** Make sure to use the `-n` flag if using `echo` to generate the base64 as otherwise a control character will cause the program to error.
       ```bash
       echo -n "secret-key" | base64
-
-      kubectl create -f k8s/secret.yaml
       ```
 
-3. Create the replication controller.
+3. Run the following in the k8s directory:
 
    ```bash
-   kubectl create -f k8s/replicationController.yaml
+   kubectl apply -f .
    ```
-
-   > **NOTE:** If running on premise, no need to provide `AWS_ACCESS_KEY_ID` or `AWS_SECRET_ACCESS_KEY` since that will come from the EC2 instance.
 
 4. Use `awsecr-cred` for name of `imagePullSecrets` on your `deployment.yaml` file.
 
@@ -84,17 +82,12 @@ The value for `application_default_credentials.json` can be obtained with the fo
    base64 -w 0 $HOME/.config/gcloud/application_default_credentials.json
    ```
 
-3. Create the secret in kubernetes
+3. Run the following in the k8s directory:
 
    ```bash
-   kubectl create -f k8s/secret.yml
+   kubectl apply -f .
    ```
 
-4. Create the replication controller:
-
-   ```bash
-   kubectl create -f k8s/replicationController.yaml
-   ```
 
 ## How to setup running in Docker Private Registry
 
@@ -106,17 +99,12 @@ The value for `application_default_credentials.json` can be obtained with the fo
    echo -n "secret-key" | base64
    ```
 
-3. Create the secret in kubernetes
+3. Run the following in the k8s directory:
 
    ```bash
-   kubectl create -f k8s/secret.yml
+   kubectl apply -f .
    ```
 
-4. Create the replication controller:
-
-   ```bash
-   kubectl create -f k8s/replicationController.yaml
-   ```
 
 ## How to set up Azure Container Registry
 
@@ -130,17 +118,12 @@ The value for `application_default_credentials.json` can be obtained with the fo
    echo -n "secret-key" | base64
    ```
 
-3. Create the secret in kubernetes
+3. Run the following in the k8s directory:
 
    ```bash
-   kubectl create -f k8s/secret.yml
+   kubectl apply -f .
    ```
 
-4. Create the replication controller:
-
-   ```bash
-   kubectl create -f k8s/replicationController.yaml
-   ```
 
 ## DockerHub Image
 
